@@ -245,6 +245,16 @@ where
         self.set_address_window(sx, sy, ex, ey)?;
         self.write_pixels_buffered(colors)
     }
+
+    pub fn adjust_gamma(&mut self, pos: &[u8;16], neg: &[u8;16]) -> Result<(), ()> {
+        self.write_command(Instruction::GMCTRP1, pos)?;
+        self.write_command(Instruction::GMCTRN1, neg)
+    }
+}
+
+pub mod gamma {
+    pub const POS: &[u8;16] = &[0x10, 0x0E, 0x02, 0x03, 0x0E, 0x07, 0x02, 0x07, 0x0A, 0x12, 0x27, 0x37, 0x00, 0x0D, 0x0E, 0x10];
+    pub const NEG: &[u8;16] = &[0x10, 0x0E, 0x03, 0x03, 0x0F, 0x06, 0x02, 0x08, 0x0A, 0x13, 0x26, 0x36, 0x00, 0x0D, 0x0E, 0x10];
 }
 
 #[cfg(feature = "graphics")]
